@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">RecyclerViewDemo</string>
+
+    <string-array name="sample_names">
+        <item>Abc</item>
+        <item>Def</item>
+        <item>Ghi</item>
+        <item>Jkl</item>
+        <item>Mno</item>
+        <item>Pqr</item>
+        <item>Stu</item>
+        <item>vwx</item>
+        <item>yz</item>
+    </string-array>
+
+    <string-array name="sample_description">
+        <item>This is random description</item>
+        <item>This is Not Random description</item>
+        <item>This is random description</item>
+        <item>This is Not Random description</item>
+        <item>This is random description</item>
+        <item>This is Not Random description</item>
+        <item>This is random description</item>
+        <item>This is Not Random description</item>
+        <item>This is random description</item>
+    </string-array>
+</resources>
