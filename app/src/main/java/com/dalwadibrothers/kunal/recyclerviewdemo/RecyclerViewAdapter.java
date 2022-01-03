@@ -1,5 +1,6 @@
 package com.dalwadibrothers.kunal.recyclerviewdemo;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,8 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.dalwadibrothers.kunal.recyclerviewdemo.databinding.OneRowRecyclerView;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.RecyclerViewHolder> {
 
@@ -35,30 +38,29 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         2. Pass that view and give it to your custom ViewHolder you made (which mimic's the single row xml)
         3. return that ViewHolder object
          */
-
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.one_row_recyclerview, parent, false);
-        RecyclerViewHolder recyclerViewHolder = new RecyclerViewHolder(view);
+        OneRowRecyclerView oneRowRecyclerView = OneRowRecyclerView.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+        RecyclerViewHolder recyclerViewHolder = new RecyclerViewHolder(oneRowRecyclerView);
 
         return recyclerViewHolder;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RecyclerViewHolder holder, @SuppressLint("RecyclerView") int position) {
 
         /*
         This function binds the data with the UI
          */
 
-        holder.tvName.setText(stringsName[position]);
-        holder.tvName.setOnClickListener(new View.OnClickListener() {
+        holder.oneRowRecyclerView.tvName.setText(stringsName[position]);
+        holder.oneRowRecyclerView.tvName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Toast.makeText(context, "Clicked this name " + stringsName[position], Toast.LENGTH_SHORT).show();
             }
         });
 
-        holder.tvDesc.setText(stringsDescription[position]);
-        holder.tvDesc.setOnClickListener(new View.OnClickListener() {
+        holder.oneRowRecyclerView.tvDescription.setText(stringsDescription[position]);
+        holder.oneRowRecyclerView.tvDescription.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Toast.makeText(context, "This is Description Speaking", Toast.LENGTH_SHORT).show();
@@ -82,14 +84,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         we will create them here and map them to the xml layout.(unless we do viewBinding)
          */
 
-        TextView tvName;
-        TextView tvDesc;
+        OneRowRecyclerView oneRowRecyclerView;
 
-        public RecyclerViewHolder(@NonNull View itemView) {
-            super(itemView);
-            tvName = itemView.findViewById(R.id.tv_name);
-            tvDesc = itemView.findViewById(R.id.tv_description);
+        public RecyclerViewHolder(@NonNull OneRowRecyclerView oneRowRecyclerView) {
+            super(oneRowRecyclerView.getRoot());
 
+            this.oneRowRecyclerView = oneRowRecyclerView;
         }
     }
 
