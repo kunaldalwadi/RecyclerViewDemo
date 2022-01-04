@@ -5,6 +5,8 @@
       <map>
         <entry key="..\:/Users/kunal/AndroidStudioProjects/RecyclerViewDemo/app/src/main/res/layout/activity_main.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/kunal/AndroidStudioProjects/RecyclerViewDemo/app/src/main/res/layout/one_row_recyclerview.xml" value="0.264" />
+        <entry key="..\:/Users/kunal/AndroidStudioProjects/RecyclerViewDemo/app/src/main/res/layout/one_row_recyclerview_networkdata.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/kunal/AndroidStudioProjects/RecyclerViewDemo/app/src/main/res/layout/one_row_recyclerview_staticdata.xml" value="0.36666666666666664" />
       </map>
     </option>
   </component>

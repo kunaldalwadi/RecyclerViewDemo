@@ -5,7 +5,6 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -13,13 +12,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.dalwadibrothers.kunal.recyclerviewdemo.databinding.OneRowRecyclerView;
 
-public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.RecyclerViewHolder> {
+/*
+This adapter is taking data from strings.xml file
+
+This adapter is an example of how to work with static data.
+ */
+public class RecyclerViewAdapterStaticData extends RecyclerView.Adapter<RecyclerViewAdapterStaticData.RecyclerViewHolder> {
 
     Context context;
     String[] stringsName;
     String[] stringsDescription;
 
-    public RecyclerViewAdapter(Context context, String[] stringsName, String[] stringsDescription) {
+    public RecyclerViewAdapterStaticData(Context context, String[] stringsName, String[] stringsDescription) {
         this.context = context;
         this.stringsName = stringsName;
         this.stringsDescription = stringsDescription;
