@@ -1,19 +1,18 @@
 package com.dalwadibrothers.kunal.recyclerviewdemo;
 
-import androidx.annotation.LongDef;
+import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
+import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.util.Log;
-import android.widget.Toast;
-
 import com.dalwadibrothers.kunal.recyclerviewdemo.databinding.MainActivityBinding;
 
-import okhttp3.ResponseBody;
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -27,12 +26,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_main);
-
         mainActivityBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
         /*
         1. Set Layout Manager for RecyclerView
+        2. Initialize the AdapterClass
+        3. setAdapter
          */
 
         mainActivityBinding.rvList.setLayoutManager(new LinearLayoutManager(this));
@@ -54,36 +53,35 @@ public class MainActivity extends AppCompatActivity {
 
         NetworkApi networkApi = NetworkModule.getRetrofit().create(NetworkApi.class);
 
-        Call<University> uniNames = networkApi.getUniNames();
+        Call<List<University>> uniNames = networkApi.getUniNames();
 
         Log.d(TAG, "makeApiCall: URL = " + uniNames.request().url().toString());
 
-        uniNames.enqueue(new Callback<University>() {
+        uniNames.enqueue(new Callback<List<University>>() {
             @Override
-            public void onResponse(Call<University> call, Response<University> response) {
+            public void onResponse(Call<List<University>> call, Response<List<University>> response) {
 
-                if (response.isSuccessful()) {
-                    if (response.body() != null) {
-                        sendItToAdapterNetworkData(response.body());
+                if (response.isSuccessful())
+                {
+                    if (response.body() != null)
+                    {
+                        List<University> universityList = response.body();
+                        sendItToAdapterNetworkData(universityList);
                     }
                 }
             }
 
             @Override
-            public void onFailure(Call<University> call, Throwable t) {
+            public void onFailure(Call<List<University>> call, Throwable t) {
                 Toast.makeText(MainActivity.this, "Failure during API call : " + t.toString(), Toast.LENGTH_SHORT).show();
                 Log.d(TAG, "onFailure: " + t.toString());
             }
         });
     }
 
-    private void sendItToAdapterNetworkData(University body) {
-
-        University university = new University(body.getCountry(), body.getDomains(), body.getName(),body.getStateProvince(), body.getWeb_pages(), body.getAlpha_two_code());
-
+    private void sendItToAdapterNetworkData(List<University> universityList) {
         mainActivityBinding.rvList.setLayoutManager(new LinearLayoutManager(this));
-        RecyclerViewAdapterNetworkData recyclerViewAdapterNetworkData = new RecyclerViewAdapterNetworkData(university);
+        RecyclerViewAdapterNetworkData recyclerViewAdapterNetworkData = new RecyclerViewAdapterNetworkData(universityList);
         mainActivityBinding.rvList.setAdapter(recyclerViewAdapterNetworkData);
-
     }
 }

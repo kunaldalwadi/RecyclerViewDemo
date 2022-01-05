@@ -9,12 +9,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.dalwadibrothers.kunal.recyclerviewdemo.databinding.OneRecyclerViewNetworkData;
 
+import java.util.List;
+
 public class RecyclerViewAdapterNetworkData extends RecyclerView.Adapter<RecyclerViewAdapterNetworkData.RecyclerViewHolderNetworkData> {
 
-    private University university;
+    private List<University> universities;
 
-    public RecyclerViewAdapterNetworkData(University university) {
-        this.university = university;
+    public RecyclerViewAdapterNetworkData(List<University> universities) {
+        this.universities = universities;
     }
 
     @NonNull
@@ -28,14 +30,28 @@ public class RecyclerViewAdapterNetworkData extends RecyclerView.Adapter<Recycle
     @Override
     public void onBindViewHolder(@NonNull RecyclerViewHolderNetworkData holder, int position) {
 
-        holder.oneRecyclerViewNetworkData.tvUniname.setText(university.getName());
-        holder.oneRecyclerViewNetworkData.tvCountryname.setText(university.getCountry());
-        holder.oneRecyclerViewNetworkData.tvWeblink.setText(university.getWeb_pages().get(position));
+        holder.oneRecyclerViewNetworkData.tvUniname.setText(universities.get(position).getName());
+        holder.oneRecyclerViewNetworkData.tvCountryname.setText(universities.get(position).getCountry());
+        holder.oneRecyclerViewNetworkData.tvWeblink.setText(universities.get(position).getWeb_pages().toString());
+
+        holder.oneRecyclerViewNetworkData.cvUnilistCardview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (holder.oneRecyclerViewNetworkData.tvWeblink.getVisibility() == View.GONE)
+                {
+                    holder.oneRecyclerViewNetworkData.tvWeblink.setVisibility(View.VISIBLE);
+                }
+                else if (holder.oneRecyclerViewNetworkData.tvWeblink.getVisibility() == View.VISIBLE)
+                {
+                    holder.oneRecyclerViewNetworkData.tvWeblink.setVisibility(View.GONE);
+                }
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
-        return 10;
+        return universities.size();
     }
 
     public static class RecyclerViewHolderNetworkData extends RecyclerView.ViewHolder {
