@@ -20,6 +20,8 @@
 
             We can use cardView to give a better looking UI to the single row layout.
             CardView can have rounded edges and elevated design.
+            CardView van be used for each UI element separately as well.
+            Like in the example below only the ImageView is wrapped in CardView.
 
             -->
 

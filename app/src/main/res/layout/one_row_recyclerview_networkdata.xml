@@ -3,7 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data class="OneRecyclerViewNetworkData">
-
+        <variable
+            name="university"
+            type="com.dalwadibrothers.kunal.recyclerviewdemo.University" />
+        <variable
+            name="defaultUniversityName"
+            type="String" />
     </data>
 
     <LinearLayout
@@ -28,21 +33,21 @@
                     android:id="@+id/tv_uniname"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="University Name"
+                    android:text="@{university.name}"
                     android:textSize="15sp" />
 
                 <TextView
                     android:id="@+id/tv_countryname"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Country Name"
+                    android:text="@{university.country}"
                     android:textSize="10sp" />
 
                 <TextView
                     android:id="@+id/tv_weblink"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Web Page"
+                    android:text="@{university.web_pages.toString()}"
                     android:textSize="10sp" />
 
             </LinearLayout>

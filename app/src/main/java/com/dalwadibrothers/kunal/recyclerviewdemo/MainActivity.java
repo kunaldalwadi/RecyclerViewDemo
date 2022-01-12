@@ -84,4 +84,10 @@ public class MainActivity extends AppCompatActivity {
         RecyclerViewAdapterNetworkData recyclerViewAdapterNetworkData = new RecyclerViewAdapterNetworkData(universityList);
         mainActivityBinding.rvList.setAdapter(recyclerViewAdapterNetworkData);
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mainActivityBinding = null;
+    }
 }
