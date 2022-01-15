@@ -5,9 +5,13 @@ import android.os.Handler;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.room.DatabaseConfiguration;
+import androidx.room.InvalidationTracker;
+import androidx.sqlite.db.SupportSQLiteOpenHelper;
 
 import com.dalwadibrothers.kunal.recyclerviewdemo.databinding.MainActivityBinding;
 
@@ -22,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = MainActivity.class.getSimpleName();
 
     private MainActivityBinding mainActivityBinding;
+    private UniversityDAO universityDao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +38,8 @@ public class MainActivity extends AppCompatActivity {
         2. Initialize the AdapterClass
         3. setAdapter
          */
+
+        initializeDatabase();
 
         mainActivityBinding.rvList.setLayoutManager(new LinearLayoutManager(this));
         RecyclerViewAdapterStaticData recyclerViewAdapterStaticData = new RecyclerViewAdapterStaticData(this, getResources().getStringArray(R.array.sample_names), getResources().getStringArray(R.array.sample_description));
@@ -48,6 +55,16 @@ public class MainActivity extends AppCompatActivity {
         }, 5000);
     }
 
+    private void initializeDatabase() {
+        AppDatabase appDatabase = AppDatabase.getAppDatabase(this);
+        universityDao = appDatabase.getUniversityDao();
+    }
+
+    private void doSomething(University university){
+
+        universityDao.insertUniversity(university);
+    }
+
     //Single responsibility principle - only makes the call
     public void makeApiCall() {
 
@@ -61,11 +78,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<University>> call, Response<List<University>> response) {
 
-                if (response.isSuccessful())
-                {
-                    if (response.body() != null)
-                    {
+                if (response.isSuccessful()) {
+                    if (response.body() != null) {
                         List<University> universityList = response.body();
+
+                        for (University uni: universityList) {
+                            doSomething(uni);
+                        }
+
                         sendItToAdapterNetworkData(universityList);
                     }
                 }

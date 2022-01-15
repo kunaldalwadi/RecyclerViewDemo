@@ -2,20 +2,39 @@ package com.dalwadibrothers.kunal.recyclerviewdemo;
 
 import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
 
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
+@Entity(tableName = "universities")
 public class University extends BaseObservable {
 
-    public String country;
-    public List<String> domains;
-    public String name;
+    @PrimaryKey(autoGenerate = true)
+    private int uni_id;
+
+    @ColumnInfo(name = "country")
+    private String country;
+
+    @ColumnInfo(name = "domains")
+    private List<String> domains;
+
+    @ColumnInfo(name = "name")
+    private String name;
+
+    @ColumnInfo(name = "stateProvince")
     @SerializedName("state-province")
-    public String stateProvince;
-    public List<String> web_pages;
-    public String alpha_two_code;
+    private String stateProvince;
+
+    @ColumnInfo(name = "web_pages")
+    private List<String> web_pages;
+
+    @ColumnInfo(name = "alpha_two_code")
+    private String alpha_two_code;
 
     public University(String country, List<String> domains, String name, String stateProvince, List<String> web_pages, String alpha_two_code) {
         this.country = country;
@@ -24,6 +43,16 @@ public class University extends BaseObservable {
         this.stateProvince = stateProvince;
         this.web_pages = web_pages;
         this.alpha_two_code = alpha_two_code;
+    }
+
+    @Bindable
+    public int getUni_id() {
+        return uni_id;
+    }
+
+    public void setUni_id(int uni_id) {
+        this.uni_id = uni_id;
+        notifyPropertyChanged(BR.uni_id);
     }
 
     @Bindable

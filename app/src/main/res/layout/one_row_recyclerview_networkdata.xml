@@ -6,9 +6,6 @@
         <variable
             name="university"
             type="com.dalwadibrothers.kunal.recyclerviewdemo.University" />
-        <variable
-            name="defaultUniversityName"
-            type="String" />
     </data>
 
     <LinearLayout
@@ -41,6 +38,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@{university.country}"
+                    android:textSize="10sp" />
+
+                <TextView
+                    android:id="@+id/tv_domains"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{university.domains.toString()}"
                     android:textSize="10sp" />
 
                 <TextView

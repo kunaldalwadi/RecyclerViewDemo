@@ -11,6 +11,12 @@ import com.dalwadibrothers.kunal.recyclerviewdemo.databinding.OneRecyclerViewNet
 
 import java.util.List;
 
+
+/*
+This adapter is taking data from internet using Retrofit
+
+This adapter is an example of how to work with data coming from a URL
+ */
 public class RecyclerViewAdapterNetworkData extends RecyclerView.Adapter<RecyclerViewAdapterNetworkData.RecyclerViewHolderNetworkData> {
 
     private List<University> universities;
@@ -33,6 +39,7 @@ public class RecyclerViewAdapterNetworkData extends RecyclerView.Adapter<Recycle
         holder.oneRecyclerViewNetworkData.tvUniname.setText(universities.get(position).getName());
         holder.oneRecyclerViewNetworkData.tvCountryname.setText(universities.get(position).getCountry());
         holder.oneRecyclerViewNetworkData.tvWeblink.setText(universities.get(position).getWeb_pages().toString());
+        holder.oneRecyclerViewNetworkData.tvDomains.setText(universities.get(position).getDomains().toString());
 
         holder.oneRecyclerViewNetworkData.cvUnilistCardview.setOnClickListener(new View.OnClickListener() {
             @Override
