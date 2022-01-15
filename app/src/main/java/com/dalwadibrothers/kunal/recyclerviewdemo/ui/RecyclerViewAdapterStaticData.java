@@ -1,4 +1,4 @@
-package com.dalwadibrothers.kunal.recyclerviewdemo;
+package com.dalwadibrothers.kunal.recyclerviewdemo.ui;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -19,9 +19,9 @@ This adapter is an example of how to work with static data.
  */
 public class RecyclerViewAdapterStaticData extends RecyclerView.Adapter<RecyclerViewAdapterStaticData.RecyclerViewHolder> {
 
-    Context context;
-    String[] stringsName;
-    String[] stringsDescription;
+    private Context context;
+    private String[] stringsName;
+    private String[] stringsDescription;
 
     public RecyclerViewAdapterStaticData(Context context, String[] stringsName, String[] stringsDescription) {
         this.context = context;

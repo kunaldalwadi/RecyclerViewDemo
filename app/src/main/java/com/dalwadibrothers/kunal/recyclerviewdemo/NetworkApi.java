@@ -1,5 +1,7 @@
 package com.dalwadibrothers.kunal.recyclerviewdemo;
 
+import com.dalwadibrothers.kunal.recyclerviewdemo.db.University;
+
 import java.util.List;
 
 import retrofit2.Call;

@@ -1,4 +1,4 @@
-package com.dalwadibrothers.kunal.recyclerviewdemo;
+package com.dalwadibrothers.kunal.recyclerviewdemo.db;
 
 import androidx.room.TypeConverter;
 

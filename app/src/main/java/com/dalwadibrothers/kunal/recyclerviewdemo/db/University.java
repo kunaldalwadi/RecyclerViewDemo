@@ -1,4 +1,4 @@
-package com.dalwadibrothers.kunal.recyclerviewdemo;
+package com.dalwadibrothers.kunal.recyclerviewdemo.db;
 
 import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
@@ -7,6 +7,7 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
+import com.dalwadibrothers.kunal.recyclerviewdemo.BR;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;

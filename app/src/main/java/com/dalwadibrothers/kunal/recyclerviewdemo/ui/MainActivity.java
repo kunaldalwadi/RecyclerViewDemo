@@ -1,19 +1,21 @@
-package com.dalwadibrothers.kunal.recyclerviewdemo;
+package com.dalwadibrothers.kunal.recyclerviewdemo.ui;
 
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.room.DatabaseConfiguration;
-import androidx.room.InvalidationTracker;
-import androidx.sqlite.db.SupportSQLiteOpenHelper;
 
+import com.dalwadibrothers.kunal.recyclerviewdemo.NetworkApi;
+import com.dalwadibrothers.kunal.recyclerviewdemo.NetworkModule;
+import com.dalwadibrothers.kunal.recyclerviewdemo.R;
 import com.dalwadibrothers.kunal.recyclerviewdemo.databinding.MainActivityBinding;
+import com.dalwadibrothers.kunal.recyclerviewdemo.db.AppDatabase;
+import com.dalwadibrothers.kunal.recyclerviewdemo.db.University;
+import com.dalwadibrothers.kunal.recyclerviewdemo.db.UniversityDAO;
 
 import java.util.List;
 
@@ -45,11 +47,18 @@ public class MainActivity extends AppCompatActivity {
         RecyclerViewAdapterStaticData recyclerViewAdapterStaticData = new RecyclerViewAdapterStaticData(this, getResources().getStringArray(R.array.sample_names), getResources().getStringArray(R.array.sample_description));
         mainActivityBinding.rvList.setAdapter(recyclerViewAdapterStaticData);
 
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                makeApiCall();
+            }
+        }).start();
+
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
 
-                makeApiCall();
+                getDataFromDatabase();
 
             }
         }, 5000);
@@ -60,9 +69,18 @@ public class MainActivity extends AppCompatActivity {
         universityDao = appDatabase.getUniversityDao();
     }
 
-    private void doSomething(University university){
+    private void insertDataIntoDatabase(List<University> universityList) {
+        for (University university : universityList) {
+            universityDao.insertUniversity(university);
+        }
+    }
 
-        universityDao.insertUniversity(university);
+    private void getDataFromDatabase() {
+
+        Toast.makeText(this, "Fetching Data From Database", Toast.LENGTH_SHORT).show();
+
+        sendItToAdapterNetworkData(universityDao.getAllUniversities());
+
     }
 
     //Single responsibility principle - only makes the call
@@ -80,13 +98,10 @@ public class MainActivity extends AppCompatActivity {
 
                 if (response.isSuccessful()) {
                     if (response.body() != null) {
+
                         List<University> universityList = response.body();
 
-                        for (University uni: universityList) {
-                            doSomething(uni);
-                        }
-
-                        sendItToAdapterNetworkData(universityList);
+                        insertDataIntoDatabase(universityList);
                     }
                 }
             }

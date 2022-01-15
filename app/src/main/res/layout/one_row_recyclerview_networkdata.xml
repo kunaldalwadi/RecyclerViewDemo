@@ -5,7 +5,7 @@
     <data class="OneRecyclerViewNetworkData">
         <variable
             name="university"
-            type="com.dalwadibrothers.kunal.recyclerviewdemo.University" />
+            type="com.dalwadibrothers.kunal.recyclerviewdemo.db.University" />
     </data>
 
     <LinearLayout
