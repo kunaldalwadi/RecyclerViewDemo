@@ -1,4 +1,4 @@
-package com.dalwadibrothers.kunal.recyclerviewdemo.ui;
+package com.dalwadibrothers.kunal.recyclerviewdemo.view;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,7 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.dalwadibrothers.kunal.recyclerviewdemo.databinding.OneRecyclerViewNetworkData;
-import com.dalwadibrothers.kunal.recyclerviewdemo.db.University;
+import com.dalwadibrothers.kunal.recyclerviewdemo.model.db.University;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.dalwadibrothers.kunal.recyclerviewdemo.db;
+package com.dalwadibrothers.kunal.recyclerviewdemo.model.db;
 
 import android.content.Context;
 import android.util.Log;
@@ -29,7 +29,7 @@ The class that is annotated with Database must have an abstract method that has 
 While generating the code at compile time, Room will generate an implementation of this class.
 
  */
-@Database(entities = {University.class}, version = 1)
+@Database(entities = {University.class}, version = 1, exportSchema = false)
 @TypeConverters({Converters.class})
 public abstract class AppDatabase extends RoomDatabase {
 
@@ -44,6 +44,7 @@ public abstract class AppDatabase extends RoomDatabase {
         if (appDatabase == null) {
             appDatabase = Room
                     .databaseBuilder(context, AppDatabase.class, "database_one")
+                    .fallbackToDestructiveMigration()
                     .addCallback(callback)
                     .allowMainThreadQueries()
                     .build();

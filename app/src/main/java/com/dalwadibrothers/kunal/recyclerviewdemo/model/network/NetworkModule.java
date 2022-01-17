@@ -1,4 +1,4 @@
-package com.dalwadibrothers.kunal.recyclerviewdemo;
+package com.dalwadibrothers.kunal.recyclerviewdemo.model.network;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;

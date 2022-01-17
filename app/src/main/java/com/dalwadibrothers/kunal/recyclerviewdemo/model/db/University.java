@@ -1,10 +1,9 @@
-package com.dalwadibrothers.kunal.recyclerviewdemo.db;
+package com.dalwadibrothers.kunal.recyclerviewdemo.model.db;
 
 import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
-import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import com.dalwadibrothers.kunal.recyclerviewdemo.BR;
@@ -46,14 +45,12 @@ public class University extends BaseObservable {
         this.alpha_two_code = alpha_two_code;
     }
 
-    @Bindable
     public int getUni_id() {
         return uni_id;
     }
 
     public void setUni_id(int uni_id) {
         this.uni_id = uni_id;
-        notifyPropertyChanged(BR.uni_id);
     }
 
     @Bindable

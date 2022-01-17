@@ -1,4 +1,4 @@
-package com.dalwadibrothers.kunal.recyclerviewdemo.ui;
+package com.dalwadibrothers.kunal.recyclerviewdemo.view;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -7,15 +7,18 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.dalwadibrothers.kunal.recyclerviewdemo.NetworkApi;
-import com.dalwadibrothers.kunal.recyclerviewdemo.NetworkModule;
+import com.dalwadibrothers.kunal.recyclerviewdemo.model.network.NetworkApi;
+import com.dalwadibrothers.kunal.recyclerviewdemo.model.network.NetworkModule;
 import com.dalwadibrothers.kunal.recyclerviewdemo.R;
 import com.dalwadibrothers.kunal.recyclerviewdemo.databinding.MainActivityBinding;
-import com.dalwadibrothers.kunal.recyclerviewdemo.db.AppDatabase;
-import com.dalwadibrothers.kunal.recyclerviewdemo.db.University;
-import com.dalwadibrothers.kunal.recyclerviewdemo.db.UniversityDAO;
+import com.dalwadibrothers.kunal.recyclerviewdemo.model.db.AppDatabase;
+import com.dalwadibrothers.kunal.recyclerviewdemo.model.db.University;
+import com.dalwadibrothers.kunal.recyclerviewdemo.model.db.UniversityDAO;
+import com.dalwadibrothers.kunal.recyclerviewdemo.viewmodel.MainActivityViewModel;
 
 import java.util.List;
 
@@ -29,57 +32,36 @@ public class MainActivity extends AppCompatActivity {
 
     private MainActivityBinding mainActivityBinding;
     private UniversityDAO universityDao;
+    private MainActivityViewModel mainActivityViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mainActivityBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
-        /*
+        mainActivityViewModel = new ViewModelProvider(this).get(MainActivityViewModel.class);
+        setupObserver();
+
+
+         /*
         1. Set Layout Manager for RecyclerView
         2. Initialize the AdapterClass
         3. setAdapter
          */
-
-        initializeDatabase();
-
         mainActivityBinding.rvList.setLayoutManager(new LinearLayoutManager(this));
         RecyclerViewAdapterStaticData recyclerViewAdapterStaticData = new RecyclerViewAdapterStaticData(this, getResources().getStringArray(R.array.sample_names), getResources().getStringArray(R.array.sample_description));
         mainActivityBinding.rvList.setAdapter(recyclerViewAdapterStaticData);
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                makeApiCall();
-            }
-        }).start();
-
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-
-                getDataFromDatabase();
-
-            }
-        }, 5000);
     }
 
-    private void initializeDatabase() {
-        AppDatabase appDatabase = AppDatabase.getAppDatabase(this);
-        universityDao = appDatabase.getUniversityDao();
-    }
+    private void setupObserver() {
 
-    private void insertDataIntoDatabase(List<University> universityList) {
-        for (University university : universityList) {
-            universityDao.insertUniversity(university);
-        }
-    }
-
-    private void getDataFromDatabase() {
-
-        Toast.makeText(this, "Fetching Data From Database", Toast.LENGTH_SHORT).show();
-
-        sendItToAdapterNetworkData(universityDao.getAllUniversities());
+       mainActivityViewModel.getAllUniversitiesListLiveData().observe(this, new Observer<List<University>>() {
+           @Override
+           public void onChanged(List<University> universities) {
+               sendItToAdapterNetworkData(universities);
+           }
+       });
 
     }
 
@@ -101,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
 
                         List<University> universityList = response.body();
 
-                        insertDataIntoDatabase(universityList);
+//                        insertDataIntoDatabase(universityList);
                     }
                 }
             }
@@ -115,6 +97,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void sendItToAdapterNetworkData(List<University> universityList) {
+
+         /*
+        1. Set Layout Manager for RecyclerView
+        2. Initialize the AdapterClass
+        3. setAdapter
+         */
+
         mainActivityBinding.rvList.setLayoutManager(new LinearLayoutManager(this));
         RecyclerViewAdapterNetworkData recyclerViewAdapterNetworkData = new RecyclerViewAdapterNetworkData(universityList);
         mainActivityBinding.rvList.setAdapter(recyclerViewAdapterNetworkData);

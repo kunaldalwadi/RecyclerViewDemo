@@ -12,7 +12,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:padding="8dp"
-        tools:context=".ui.MainActivity">
+        tools:context=".view.MainActivity">
 
         <TextView
             android:id="@+id/tv_heading"
@@ -28,7 +28,8 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_list"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            tools:listitem="@layout/one_row_recyclerview_networkdata"/>
 
     </LinearLayout>
 </layout>

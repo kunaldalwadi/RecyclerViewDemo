@@ -1,5 +1,6 @@
-package com.dalwadibrothers.kunal.recyclerviewdemo.db;
+package com.dalwadibrothers.kunal.recyclerviewdemo.model.db;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -24,7 +25,7 @@ public interface UniversityDAO {
     void deleteUniversity(University university);
 
     @Query("SELECT * FROM universities")
-    List<University> getAllUniversities();
+    LiveData<List<University>> getAllUniversities();
 
     /*
     When you want to write where queries or queries that wants you to refer to the parameter you are passing,

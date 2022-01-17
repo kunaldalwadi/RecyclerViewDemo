@@ -1,6 +1,6 @@
-package com.dalwadibrothers.kunal.recyclerviewdemo;
+package com.dalwadibrothers.kunal.recyclerviewdemo.model.network;
 
-import com.dalwadibrothers.kunal.recyclerviewdemo.db.University;
+import com.dalwadibrothers.kunal.recyclerviewdemo.model.db.University;
 
 import java.util.List;
 
