@@ -20,7 +20,7 @@ This adapter is an example of how to work with data coming from a URL
  */
 public class RecyclerViewAdapterNetworkData extends RecyclerView.Adapter<RecyclerViewAdapterNetworkData.RecyclerViewHolderNetworkData> {
 
-    private List<University> universities;
+    private final List<University> universities;
 
     public RecyclerViewAdapterNetworkData(List<University> universities) {
         this.universities = universities;

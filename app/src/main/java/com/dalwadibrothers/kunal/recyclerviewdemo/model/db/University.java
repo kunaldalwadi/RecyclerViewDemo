@@ -4,6 +4,7 @@ import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import com.dalwadibrothers.kunal.recyclerviewdemo.BR;
@@ -36,6 +37,11 @@ public class University extends BaseObservable {
     @ColumnInfo(name = "alpha_two_code")
     private String alpha_two_code;
 
+    @Ignore
+    public University(){
+
+    }
+
     public University(String country, List<String> domains, String name, String stateProvince, List<String> web_pages, String alpha_two_code) {
         this.country = country;
         this.domains = domains;
@@ -45,12 +51,14 @@ public class University extends BaseObservable {
         this.alpha_two_code = alpha_two_code;
     }
 
+    @Bindable
     public int getUni_id() {
         return uni_id;
     }
 
     public void setUni_id(int uni_id) {
         this.uni_id = uni_id;
+        notifyPropertyChanged(BR.uni_id);
     }
 
     @Bindable
