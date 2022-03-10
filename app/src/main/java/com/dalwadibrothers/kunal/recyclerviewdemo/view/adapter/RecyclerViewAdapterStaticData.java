@@ -1,4 +1,4 @@
-package com.dalwadibrothers.kunal.recyclerviewdemo.view;
+package com.dalwadibrothers.kunal.recyclerviewdemo.view.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -84,7 +84,7 @@ public class RecyclerViewAdapterStaticData extends RecyclerView.Adapter<Recycler
         ViewHolder is the one that has to mimic the custom one_row_view
         so that it can bind data to the respective UI elements.
 
-        Since in out current case we have 2 TextViews, 1 ImageView and 1 TextView(shows time)
+        Since in our current case we have 2 TextViews, 1 ImageView and 1 TextView(shows time)
         we will create them here and map them to the xml layout.(unless we do viewBinding)
          */
 

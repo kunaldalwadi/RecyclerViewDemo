@@ -1,4 +1,4 @@
-package com.dalwadibrothers.kunal.recyclerviewdemo.view;
+package com.dalwadibrothers.kunal.recyclerviewdemo.view.adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;

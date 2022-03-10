@@ -1,8 +1,6 @@
-package com.dalwadibrothers.kunal.recyclerviewdemo.view;
+package com.dalwadibrothers.kunal.recyclerviewdemo.view.activity;
 
 import android.os.Bundle;
-import android.util.Log;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
@@ -13,16 +11,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.dalwadibrothers.kunal.recyclerviewdemo.R;
 import com.dalwadibrothers.kunal.recyclerviewdemo.databinding.MainActivityBinding;
 import com.dalwadibrothers.kunal.recyclerviewdemo.model.db.University;
-import com.dalwadibrothers.kunal.recyclerviewdemo.model.db.UniversityDAO;
-import com.dalwadibrothers.kunal.recyclerviewdemo.model.network.NetworkApi;
-import com.dalwadibrothers.kunal.recyclerviewdemo.model.network.NetworkModule;
+import com.dalwadibrothers.kunal.recyclerviewdemo.view.adapter.RecyclerViewAdapterNetworkData;
+import com.dalwadibrothers.kunal.recyclerviewdemo.view.adapter.RecyclerViewAdapterStaticData;
 import com.dalwadibrothers.kunal.recyclerviewdemo.viewmodel.MainActivityViewModel;
 
 import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -36,10 +29,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         mainActivityBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
-        mainActivityViewModel = new ViewModelProvider(this).get(MainActivityViewModel.class);
-        setupObserver();
-
-
          /*
         1. Set Layout Manager for RecyclerView
         2. Initialize the AdapterClass
@@ -49,6 +38,9 @@ public class MainActivity extends AppCompatActivity {
         RecyclerViewAdapterStaticData recyclerViewAdapterStaticData = new RecyclerViewAdapterStaticData(this, getResources().getStringArray(R.array.sample_names), getResources().getStringArray(R.array.sample_description));
         mainActivityBinding.rvList.setAdapter(recyclerViewAdapterStaticData);
 
+
+        mainActivityViewModel = new ViewModelProvider(this).get(MainActivityViewModel.class);
+        setupObserver();
     }
 
     private void setupObserver() {

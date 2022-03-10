@@ -7,7 +7,7 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
 import com.dalwadibrothers.kunal.recyclerviewdemo.model.db.University;
-import com.dalwadibrothers.kunal.recyclerviewdemo.model.repository.AppRepository;
+import com.dalwadibrothers.kunal.recyclerviewdemo.model.repository.UniversityRepository;
 
 import java.util.List;
 
@@ -26,30 +26,30 @@ public class MainActivityViewModel extends AndroidViewModel {
 
     private static final String TAG = MainActivityViewModel.class.getSimpleName();
 
-    private AppRepository appRepository;
+    private UniversityRepository universityRepository;
     private LiveData<List<University>> allUniversitiesListLiveData;
 
     public MainActivityViewModel(@NonNull Application application) {
         super(application);
 
-        this.appRepository = new AppRepository(application);
-        this.allUniversitiesListLiveData = appRepository.getUniversitiesListLiveData();
+        this.universityRepository = new UniversityRepository(application);
+        this.allUniversitiesListLiveData = universityRepository.getUniversitiesListLiveData();
     }
 
     public void insertUniversity(University university) {
-        appRepository.insertUniversity(university);
+        universityRepository.insertUniversity(university);
     }
 
     public void deleteUniversity(University university) {
-        appRepository.deleteUniversity(university);
+        universityRepository.deleteUniversity(university);
     }
 
     public void getUniversity(String university_name) {
-        appRepository.getUniversity(university_name);
+        universityRepository.getUniversity(university_name);
     }
 
     public LiveData<List<University>> getAllUniversitiesListLiveData() {
-        appRepository.makeApiCall();
+        universityRepository.makeApiCall();
         return allUniversitiesListLiveData;
     }
 }
