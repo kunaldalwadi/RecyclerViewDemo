@@ -1,5 +1,6 @@
 package com.dalwadibrothers.kunal.recyclerviewdemo.view.activity;
 
+import android.app.Application;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -8,12 +9,19 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.dalwadibrothers.kunal.recyclerviewdemo.BaseApplication;
 import com.dalwadibrothers.kunal.recyclerviewdemo.R;
 import com.dalwadibrothers.kunal.recyclerviewdemo.databinding.MainActivityBinding;
+import com.dalwadibrothers.kunal.recyclerviewdemo.model.db.AppDatabase;
 import com.dalwadibrothers.kunal.recyclerviewdemo.model.db.University;
+import com.dalwadibrothers.kunal.recyclerviewdemo.model.network.NetworkApi;
+import com.dalwadibrothers.kunal.recyclerviewdemo.model.network.NetworkModule;
+import com.dalwadibrothers.kunal.recyclerviewdemo.model.remotedatasource.UniversityRDS;
+import com.dalwadibrothers.kunal.recyclerviewdemo.model.repository.UniversityRepository;
 import com.dalwadibrothers.kunal.recyclerviewdemo.view.adapter.RecyclerViewAdapterNetworkData;
 import com.dalwadibrothers.kunal.recyclerviewdemo.view.adapter.RecyclerViewAdapterStaticData;
 import com.dalwadibrothers.kunal.recyclerviewdemo.viewmodel.MainActivityViewModel;
+import com.dalwadibrothers.kunal.recyclerviewdemo.viewmodel.ViewModelFactory;
 
 import java.util.List;
 
@@ -23,6 +31,8 @@ public class MainActivity extends AppCompatActivity {
 
     private MainActivityBinding mainActivityBinding;
     private MainActivityViewModel mainActivityViewModel;
+    private ViewModelFactory viewModelFactory;
+    private UniversityRepository universityRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,20 +48,29 @@ public class MainActivity extends AppCompatActivity {
         RecyclerViewAdapterStaticData recyclerViewAdapterStaticData = new RecyclerViewAdapterStaticData(this, getResources().getStringArray(R.array.sample_names), getResources().getStringArray(R.array.sample_description));
         mainActivityBinding.rvList.setAdapter(recyclerViewAdapterStaticData);
 
+        viewModelFactory = new ViewModelFactory(((BaseApplication)getApplication()).getUniversityRepository());
+//        ,(((BaseApplication)getApplication()).getDatabase(),
+//                ((BaseApplication)getApplication()).getNetworkApi(),
+//                ((BaseApplication)getApplication()).getUniRDSInstance()));
 
-        mainActivityViewModel = new ViewModelProvider(this).get(MainActivityViewModel.class);
+        mainActivityViewModel = new ViewModelProvider(this, viewModelFactory).get(MainActivityViewModel.class);
         setupObserver();
+        fetchData();
+
     }
 
     private void setupObserver() {
 
-       mainActivityViewModel.getAllUniversitiesListLiveData().observe(this, new Observer<List<University>>() {
-           @Override
-           public void onChanged(List<University> universities) {
-               sendItToAdapterNetworkData(universities);
-           }
-       });
+        mainActivityViewModel.getLiveDataFromViewModel().observe(this, new Observer<List<University>>() {
+            @Override
+            public void onChanged(List<University> universities) {
+                sendItToAdapterNetworkData(universities);
+            }
+        });
+    }
 
+    private void fetchData() {
+        mainActivityViewModel.getDataFromRepository();
     }
 
     private void sendItToAdapterNetworkData(List<University> universityList) {

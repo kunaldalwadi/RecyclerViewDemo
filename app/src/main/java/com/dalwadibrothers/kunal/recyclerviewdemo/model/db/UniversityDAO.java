@@ -28,7 +28,7 @@ public interface UniversityDAO {
     LiveData<List<University>> getAllUniversities();
 
     /*
-    When you want to write where queries or queries that wants you to refer to the parameter you are passing,
+    When you want to write 'where' queries or queries that wants you to refer to the parameter you are passing,
     They can be referred to by putting ':' sign in front of it.
      */
     @Query("SELECT * FROM universities where name ==:name")
