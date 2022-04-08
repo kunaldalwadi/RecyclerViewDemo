@@ -42,12 +42,16 @@ public abstract class AppDatabase extends RoomDatabase {
     public static synchronized AppDatabase getAppDatabase(Context context) {
 
         if (appDatabase == null) {
-            appDatabase = Room
-                    .databaseBuilder(context, AppDatabase.class, "database_one")
-                    .fallbackToDestructiveMigration()
-                    .addCallback(callback)
-                    .allowMainThreadQueries()
-                    .build();
+            synchronized (AppDatabase.class) {
+                if (appDatabase == null) {
+                    appDatabase = Room
+                            .databaseBuilder(context, AppDatabase.class, "database_one")
+                            .fallbackToDestructiveMigration()
+                            .addCallback(callback)
+                            .allowMainThreadQueries()
+                            .build();
+                }
+            }
         }
 
         return appDatabase;

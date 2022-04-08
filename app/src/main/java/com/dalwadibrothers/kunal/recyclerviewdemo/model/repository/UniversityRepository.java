@@ -1,21 +1,16 @@
 package com.dalwadibrothers.kunal.recyclerviewdemo.model.repository;
 
-import android.app.Application;
-import android.util.Log;
-
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import com.dalwadibrothers.kunal.recyclerviewdemo.model.db.AppDatabase;
 import com.dalwadibrothers.kunal.recyclerviewdemo.model.db.University;
 import com.dalwadibrothers.kunal.recyclerviewdemo.model.db.UniversityDAO;
 import com.dalwadibrothers.kunal.recyclerviewdemo.model.network.NetworkApi;
-import com.dalwadibrothers.kunal.recyclerviewdemo.model.network.NetworkModule;
+import com.dalwadibrothers.kunal.recyclerviewdemo.model.remotedatasource.UniversityRDS;
 
+import java.util.ArrayList;
 import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 
 /*
@@ -37,13 +32,11 @@ public class UniversityRepository {
      */
 
     private static final String TAG = UniversityRepository.class.getSimpleName();
-
-    private UniversityDAO universityDAO;
-    private LiveData<List<University>> universitiesListLiveData;
-    private AppDatabase appDatabase;
+    private static UniversityRepository universityRepository;
     private NetworkApi networkApi;
+    private UniversityRDS universityRDS;
 
-    public UniversityRepository(Application application) {
+    public UniversityRepository(AppDatabase appDatabase, NetworkApi networkApi, UniversityRDS universityRDS) {
 
         /*
 
@@ -55,69 +48,54 @@ public class UniversityRepository {
 
         */
 
-        this.appDatabase = AppDatabase.getAppDatabase(application);
-
-        this.universityDAO = appDatabase.getUniversityDao();
-        this.universitiesListLiveData = universityDAO.getAllUniversities();
-
-        this.networkApi = NetworkModule.getRetrofit().create(NetworkApi.class);
-
+//        this.appDatabase = appDatabase;
+        this.networkApi = networkApi;
+        this.universityRDS = universityRDS;
     }
+
+    public static UniversityRepository getInstance(AppDatabase appDatabase, NetworkApi networkApi, UniversityRDS universityRDS) {
+        if (universityRepository == null) {
+            synchronized (UniversityRepository.class) {
+                if (universityRepository == null) {
+                    universityRepository = new UniversityRepository(appDatabase, networkApi, universityRDS);
+                }
+            }
+        }
+        return universityRepository;
+    }
+
+
+    //This should be called from ViewModel so that this data reaches ViewModel.
+    public List<University> getUniversityListFromRepository() {
+        List<University> universities = universityRDS.makeNetworkCallGetUniversities();
+
+        //TODO Send to database;
+
+        return universities;
+    }
+
 
     /*
     Repository is the only class now that is accessing Database,
     so Repository mimic's all methods of DAO class so that it can be accessed.
      */
 
-    public void insertUniversity(University university){
-        universityDAO.insertUniversity(university);
-    }
-
-    public void deleteUniversity(University university){
-        universityDAO.deleteUniversity(university);
-    }
-
-    public void getUniversity(String name){
-        universityDAO.getUniversity(name);
-    }
-
-    public LiveData<List<University>> getUniversitiesListLiveData() {
-        return universitiesListLiveData;
-    }
-
-    //Single responsibility principle - only makes the call
-    public void makeApiCall() {
-
-        Call<List<University>> uniNames = networkApi.getUniNames();
-
-        Log.d(TAG, "makeApiCall: URL = " + uniNames.request().url().toString());
-        Log.d(TAG, "makeApiCall: -------------------------------------------------------------");
-
-        uniNames.enqueue(new Callback<List<University>>() {
-            @Override
-            public void onResponse(Call<List<University>> call, Response<List<University>> response) {
-
-                if (response.isSuccessful()) {
-                    if (response.body() != null) {
-
-                        List<University> universityList = response.body();
-
-                        insertDataIntoDatabase(universityList);
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<University>> call, Throwable t) {
-                Log.d(TAG, "onFailure: " + t.toString());
-            }
-        });
-    }
-
-    private void insertDataIntoDatabase(List<University> universityList) {
-        for (University university: universityList) {
-            universityDAO.insertUniversity(university);
-        }
-    }
+//    public void insertUniversity(University university){
+//        appDatabase.getUniversityDao().insertUniversity(university);
+//    }
+//
+//    public void deleteUniversity(University university){
+//        appDatabase.getUniversityDao().deleteUniversity(university);
+//    }
+//
+//    public void getUniversity(String name){
+//        appDatabase.getUniversityDao().getUniversity(name);
+//    }
+//
+//    private void insertDataIntoDatabase(List<University> universityList) {
+//        for (University university: universityList) {
+//            appDatabase.getUniversityDao().insertUniversity(university);
+//        }
+//    }
 
 }

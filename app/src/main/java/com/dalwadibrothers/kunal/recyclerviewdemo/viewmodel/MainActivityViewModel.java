@@ -1,14 +1,14 @@
 package com.dalwadibrothers.kunal.recyclerviewdemo.viewmodel;
 
-import android.app.Application;
-
 import androidx.annotation.NonNull;
-import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModel;
 
 import com.dalwadibrothers.kunal.recyclerviewdemo.model.db.University;
 import com.dalwadibrothers.kunal.recyclerviewdemo.model.repository.UniversityRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /*
@@ -22,34 +22,53 @@ This awareness ensures LiveData only updates app component observers that are in
 
  */
 
-public class MainActivityViewModel extends AndroidViewModel {
+public class MainActivityViewModel extends ViewModel {
 
     private static final String TAG = MainActivityViewModel.class.getSimpleName();
 
     private UniversityRepository universityRepository;
-    private LiveData<List<University>> allUniversitiesListLiveData;
 
-    public MainActivityViewModel(@NonNull Application application) {
-        super(application);
+    //this should be observed from MainActivity.
+    private MutableLiveData<List<University>> listUniversityMutableLiveData;
 
-        this.universityRepository = new UniversityRepository(application);
-        this.allUniversitiesListLiveData = universityRepository.getUniversitiesListLiveData();
+    public MainActivityViewModel(@NonNull UniversityRepository universityRepository) {
+
+        this.universityRepository = universityRepository;
+
+        listUniversityMutableLiveData = new MutableLiveData<>();
     }
 
-    public void insertUniversity(University university) {
-        universityRepository.insertUniversity(university);
+    //this should be called from MainActivity.
+    public void getDataFromRepository() {
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                List<University> universityListFromRepository = universityRepository.getUniversityListFromRepository();
+                listUniversityMutableLiveData.postValue(universityListFromRepository);
+            }
+        }).start();
     }
 
-    public void deleteUniversity(University university) {
-        universityRepository.deleteUniversity(university);
+    public LiveData<List<University>> getLiveDataFromViewModel() {
+        return listUniversityMutableLiveData;
     }
 
-    public void getUniversity(String university_name) {
-        universityRepository.getUniversity(university_name);
-    }
 
-    public LiveData<List<University>> getAllUniversitiesListLiveData() {
-        universityRepository.makeApiCall();
-        return allUniversitiesListLiveData;
-    }
+//    public void insertUniversity(University university) {
+//        universityRepository.insertUniversity(university);
+//    }
+//
+//    public void deleteUniversity(University university) {
+//        universityRepository.deleteUniversity(university);
+//    }
+//
+//    public void getUniversity(String university_name) {
+//        universityRepository.getUniversity(university_name);
+//    }
+//
+////    public LiveData<List<University>> getAllUniversitiesListLiveData() {
+////        return universityRepository.getUniversitiesListLiveData();
+////    }
+
 }
