@@ -17,7 +17,7 @@ import retrofit2.Response;
 public class UniversityRDS {
 
     private static final String TAG = UniversityRDS.class.getSimpleName();
-    private NetworkApi networkApi;
+    private final NetworkApi networkApi;
     private static UniversityRDS universityRDS;
 
     public UniversityRDS(NetworkApi networkApi) {
@@ -34,13 +34,7 @@ public class UniversityRDS {
         }
         return universityRDS;
     }
-
-    //this should be called from Repository.
-//    public List<University> getUniversityList() {
-//        makeNetworkCallGetUniversities();
-//        return universityList;
-//    }
-
+    
     //Single responsibility principle - only makes the call
     public List<University> makeNetworkCallGetUniversities() {
 

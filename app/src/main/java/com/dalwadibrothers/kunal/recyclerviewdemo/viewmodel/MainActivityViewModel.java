@@ -1,15 +1,14 @@
 package com.dalwadibrothers.kunal.recyclerviewdemo.viewmodel;
 
+import com.dalwadibrothers.kunal.recyclerviewdemo.model.db.University;
+import com.dalwadibrothers.kunal.recyclerviewdemo.model.repository.UniversityRepository;
+
+import java.util.List;
+
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-
-import com.dalwadibrothers.kunal.recyclerviewdemo.model.db.University;
-import com.dalwadibrothers.kunal.recyclerviewdemo.model.repository.UniversityRepository;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /*
 
@@ -44,7 +43,8 @@ public class MainActivityViewModel extends ViewModel {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                List<University> universityListFromRepository = universityRepository.getUniversityListFromRepository();
+                List<University> universityListFromRepository = universityRepository.getUniversitiesListFromDatabase();
+//                List<University> universityListFromRepository = universityRepository.getUniversityListFromRepository();
                 listUniversityMutableLiveData.postValue(universityListFromRepository);
             }
         }).start();

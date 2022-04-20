@@ -1,17 +1,15 @@
 package com.dalwadibrothers.kunal.recyclerviewdemo.viewmodel;
 
-import android.app.Application;
+import com.dalwadibrothers.kunal.recyclerviewdemo.model.repository.UniversityRepository;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.dalwadibrothers.kunal.recyclerviewdemo.model.repository.UniversityRepository;
-
 public class ViewModelFactory implements ViewModelProvider.Factory{
 
 
-    private UniversityRepository universityRepository;
+    private final UniversityRepository universityRepository;
 
     public ViewModelFactory(UniversityRepository universityRepository) {
         this.universityRepository = universityRepository;

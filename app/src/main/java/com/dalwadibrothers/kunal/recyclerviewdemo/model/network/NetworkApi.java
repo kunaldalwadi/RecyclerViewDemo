@@ -9,6 +9,6 @@ import retrofit2.http.GET;
 
 public interface NetworkApi {
 
-    @GET("/search?country=United+States")
+    @GET("/search?name=engineering&country=India")
     Call<List<University>> getUniNames();
 }

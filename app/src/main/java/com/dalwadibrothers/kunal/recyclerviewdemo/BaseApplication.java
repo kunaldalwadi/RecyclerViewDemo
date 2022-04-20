@@ -11,23 +11,20 @@ import com.dalwadibrothers.kunal.recyclerviewdemo.model.repository.UniversityRep
 public class BaseApplication extends Application {
 
     private NetworkApi networkApi;
-//    private UniversityRDS universityRDS;
 
     @Override
     public void onCreate() {
         super.onCreate();
 
         networkApi = NetworkModule.getRetrofit().create(NetworkApi.class);
-//        universityRDS = UniversityRDS.getInstance(networkApi);
     }
-
 
     public AppDatabase getDatabase() {
         return AppDatabase.getAppDatabase(this);
     }
 
     public UniversityRepository getUniversityRepository() {
-        return UniversityRepository.getInstance(getDatabase(), getNetworkApi(), getUniRDSInstance());
+        return UniversityRepository.getInstance(getDatabase(), getUniRDSInstance());
     }
 
     public UniversityRDS getUniRDSInstance() {

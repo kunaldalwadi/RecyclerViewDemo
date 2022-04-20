@@ -1,15 +1,11 @@
 package com.dalwadibrothers.kunal.recyclerviewdemo.model.repository;
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
+import android.util.Log;
 
 import com.dalwadibrothers.kunal.recyclerviewdemo.model.db.AppDatabase;
 import com.dalwadibrothers.kunal.recyclerviewdemo.model.db.University;
-import com.dalwadibrothers.kunal.recyclerviewdemo.model.db.UniversityDAO;
-import com.dalwadibrothers.kunal.recyclerviewdemo.model.network.NetworkApi;
 import com.dalwadibrothers.kunal.recyclerviewdemo.model.remotedatasource.UniversityRDS;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -30,72 +26,73 @@ public class UniversityRepository {
 
      Since we are accessing Database we initialize database in the constructor of Repository and fetch initial data to show on the screen.
      */
-
+    
     private static final String TAG = UniversityRepository.class.getSimpleName();
     private static UniversityRepository universityRepository;
-    private NetworkApi networkApi;
-    private UniversityRDS universityRDS;
-
-    public UniversityRepository(AppDatabase appDatabase, NetworkApi networkApi, UniversityRDS universityRDS) {
+    private final AppDatabase appDatabase;
+    private final UniversityRDS universityRDS;
+    
+    public UniversityRepository(AppDatabase appDatabase, UniversityRDS universityRDS) {
 
         /*
 
       Two things any class needs to access database:
-      1. AppDatabase object (object of class that extends RoomDatabase)
-      2. Dao object (of each dao in the application)
+      1. This class only needs two things in Constructor
+        1. AppDatabase object to access database
+        2. UniversityRDS object to access Remote Data Source.
 
-      3. LiveData if we are using one (getter method of LiveData only as it will be available directly from the db as LiveData itself)
+      2. (Optional) put the data we received from database into a MutableLiveData object
+        1. we must post the data that we received using livedata.
+        2. as well as return it in a separate function to whoever calls it.
 
         */
-
-//        this.appDatabase = appDatabase;
-        this.networkApi = networkApi;
+        
+        this.appDatabase = appDatabase;
         this.universityRDS = universityRDS;
     }
-
-    public static UniversityRepository getInstance(AppDatabase appDatabase, NetworkApi networkApi, UniversityRDS universityRDS) {
-        if (universityRepository == null) {
-            synchronized (UniversityRepository.class) {
-                if (universityRepository == null) {
-                    universityRepository = new UniversityRepository(appDatabase, networkApi, universityRDS);
+    
+    public static UniversityRepository getInstance(AppDatabase appDatabase, UniversityRDS universityRDS) {
+        if (universityRepository == null)
+        {
+            synchronized (UniversityRepository.class)
+            {
+                if (universityRepository == null)
+                {
+                    universityRepository = new UniversityRepository(appDatabase, universityRDS);
                 }
             }
         }
         return universityRepository;
     }
-
-
+    
     //This should be called from ViewModel so that this data reaches ViewModel.
-    public List<University> getUniversityListFromRepository() {
+    //If we want to get data from the Remote Data Source we call this function.
+    public void getUniversityListFromRepository() {
         List<University> universities = universityRDS.makeNetworkCallGetUniversities();
-
+    
+    
+        Log.d(TAG, "getUniversityListFromRepository: " + universities.toString());
+        
         //TODO Send to database;
-
-        return universities;
+        insertDataIntoDatabase(universities);
+    
     }
-
-
-    /*
-    Repository is the only class now that is accessing Database,
-    so Repository mimic's all methods of DAO class so that it can be accessed.
-     */
-
-//    public void insertUniversity(University university){
-//        appDatabase.getUniversityDao().insertUniversity(university);
-//    }
-//
-//    public void deleteUniversity(University university){
-//        appDatabase.getUniversityDao().deleteUniversity(university);
-//    }
-//
-//    public void getUniversity(String name){
-//        appDatabase.getUniversityDao().getUniversity(name);
-//    }
-//
-//    private void insertDataIntoDatabase(List<University> universityList) {
-//        for (University university: universityList) {
-//            appDatabase.getUniversityDao().insertUniversity(university);
-//        }
-//    }
-
+    
+    private void insertDataIntoDatabase(List<University> universityList) {
+        for (University university : universityList)
+        {
+            appDatabase.getUniversityDao().insertUniversity(university);
+        }
+    }
+    
+    //This should be called from ViewModel so that this data reaches ViewModel.
+    //If we want to get data from the Database we call this function.
+    public List<University> getUniversitiesListFromDatabase() {
+        getUniversityListFromRepository();
+    
+        Log.d(TAG, "getUniversitiesListFromDatabase: " + appDatabase.getUniversityDao().getAllUniversities());
+        
+        return appDatabase.getUniversityDao().getAllUniversities();
+    }
+    
 }

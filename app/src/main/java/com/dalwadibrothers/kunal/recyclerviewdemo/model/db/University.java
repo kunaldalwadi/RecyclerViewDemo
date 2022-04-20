@@ -1,16 +1,16 @@
 package com.dalwadibrothers.kunal.recyclerviewdemo.model.db;
 
+import com.dalwadibrothers.kunal.recyclerviewdemo.BR;
+import com.google.gson.annotations.SerializedName;
+
+import java.util.List;
+
 import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
-
-import com.dalwadibrothers.kunal.recyclerviewdemo.BR;
-import com.google.gson.annotations.SerializedName;
-
-import java.util.List;
 
 @Entity(tableName = "universities")
 public class University extends BaseObservable {
